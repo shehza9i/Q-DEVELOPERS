@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q Developers | Construction Company in Calicut</title>
+    <style>
+        /* ------------------------- */
+        /* --- CSS STYLESHEET ------ */
+        /* ------------------------- */
+
+        :root {
+            --cool-white: #F4F4F9;
+            --purple: #5E239D;
+            --light-purple: #8A4BCE;
+            --electric-purple: #7f5af0;
+            --dark-gray: #16161a;
+        }
+
+        /* --- Basic Setup & Typography --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            height: auto;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cool-white);
+            color: var(--dark-gray);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: var(--purple);
+        }
+
+        h2 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 700px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        section {
+            position: relative;
+            width: 100%;
+            padding: 120px 8%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        /* --- Backgrounds & Canvas --- */
+        .background-controller {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #0a0a0a;
+            z-index: -2;
+        }
+
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            outline: none;
+        }
+
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(244, 244, 249, 0.1);
+            backdrop-filter: blur(0px);
+            opacity: 0;
+            z-index: 0;
+            pointer-events: none;
+            will-change: backdrop-filter, opacity;
+        }
+
+        /* --- Loader --- */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-size: 2rem;
+            color: var(--cool-white);
+            transition: opacity 1s ease-out, visibility 1s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero h1 {
+            font-size: clamp(4rem, 12vw, 9rem);
+            font-weight: 800;
+            line-height: 1;
+            color: var(--cool-white);
+            mix-blend-mode: difference;
+            z-index: 2;
+            position: relative;
+        }
+
+        #hero .word {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(30px);
+        }
+
+        .hero-description {
+            color: var(--cool-white);
+            mix-blend-mode: difference;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            max-width: 600px;
+            margin: 30px auto 40px;
+            line-height: 1.6;
+            font-weight: 400;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-description .word {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(30px);
+        }
+
+        .hero-cta {
+            opacity: 0;
+            transform: translateY(20px);
+            display: inline-block;
+            padding: 14px 32px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--cool-white);
+            text-decoration: none;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-cta:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(0px) scale(1.05) !important;
+        }
+
+        .hero-cta:active {
+            transform: translateY(0px) scale(1.02) !important;
+        }
+
+        /* --- HORIZONTAL SCROLL WRAPPER --- */
+        .horizontal-scroll-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .horizontal-track {
+            display: flex;
+            width: 400%;
+            will-change: transform;
+        }
+
+        .horizontal-track>section {
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            padding: 0 8%;
+            background-color: transparent;
+        }
+
+        /* --- About Section (Horizontal) --- */
+        #about {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #about h2,
+        #about .about-subheading,
+        #about .about-text {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #about h2 {
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            white-space: nowrap;
+            mix-blend-mode: difference;
+            color: var(--purple);
+        }
+
+        .about-subheading {
+            font-size: 1.5rem;
+            font-weight: 400;
+            font-family: 'Poppins', sans-serif;
+            color: var(--light-purple);
+            margin-bottom: 25px;
+        }
+
+        .about-text {
+            margin-bottom: 1.5em;
+        }
+
+        /* --- Services Section (Horizontal) --- */
+        #services {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .services-content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            gap: 5%;
+        }
+
+        .services-heading {
+            width: 100%;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .services-heading h2 {
+            text-align: center;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 30px;
+            width: 65%;
+            flex-shrink: 0;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            flex-grow: 1;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.05) !important;
+            border-color: rgba(94, 35, 157, 0.3);
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--purple);
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            color: #444;
+            max-width: 100%;
+        }
+
+        /* --- Portfolio Section (Horizontal Marquee) --- */
+        #portfolio {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #portfolio h2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            margin: 0;
+            pointer-events: none;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: var(--purple);
+            font-size: 4.5rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .portfolio-marquee {
+            width: 100vw;
+            position: relative;
+            margin: 4vh 0;
+        }
+
+        .portfolio-marquee::before,
+        .portfolio-marquee::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 15%;
+            z-index: 2;
+        }
+
+        .portfolio-marquee::before {
+            left: 0;
+            background: linear-gradient(to right, var(--cool-white), transparent);
+        }
+
+        .portfolio-marquee::after {
+            right: 0;
+            background: linear-gradient(to left, var(--cool-white), transparent);
+        }
+
+        .portfolio-track {
+            display: flex;
+            width: fit-content;
+        }
+
+        #marquee2 .portfolio-track {
+            transform: translateX(-50%);
+        }
+
+        .portfolio-item {
+            width: 25vw;
+            flex-shrink: 0;
+            padding: 0 15px;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 35vh;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* --- Signature Projects Section (Bento Grid) --- */
+        #projects {
+            background-color: transparent;
+            position: relative;
+        }
+
+        #projects h2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            margin: 0;
+            pointer-events: none;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: var(--purple);
+            font-size: 4.5rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 200px);
+            gap: 20px;
+            margin-top: -20px;
+            perspective: 2000px;
+        }
+
+        .bento-item {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transform-style: preserve-3d;
+            opacity: 0;
+            transform: scale(0.5) rotateX(45deg) translateY(50px);
+            transition: box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .bento-item:hover {
+            z-index: 5;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .bento-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+            transition: background 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .bento-item:hover::after {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 70%);
+        }
+
+        .bento-text {
+            z-index: 1;
+            position: relative;
+            transform: translateY(0px);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .bento-desc {
+            z-index: 1;
+            position: relative;
+            font-size: 0.95rem;
+            font-weight: 400;
+            font-family: 'Poppins', sans-serif;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            max-width: 90%;
+            line-height: 1.5;
+            margin-top: 5px;
+        }
+
+        .bento-item:hover .bento-text {
+            transform: translateY(-15px);
+        }
+
+        .bento-item:hover .bento-desc {
+            opacity: 1;
+            transform: translateY(0px);
+        }
+
+        .item-1 {
+            grid-column: 1 / 3;
+            grid-row: 1 / 3;
+            background-image: url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080');
+        }
+
+        .item-2 {
+            grid-column: 3 / 4;
+            grid-row: 1 / 2;
+            background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080');
+        }
+
+        .item-3 {
+            grid-column: 4 / 5;
+            grid-row: 1 / 3;
+            background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080');
+        }
+
+        .item-4 {
+            grid-column: 1 / 2;
+            grid-row: 3 / 4;
+            background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080');
+        }
+
+        .item-5 {
+            grid-column: 2 / 4;
+            grid-row: 3 / 4;
+            background-image: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080');
+        }
+
+        .item-6 {
+            grid-column: 4 / 5;
+            grid-row: 3 / 4;
+            background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080');
+        }
+        
+        #testimonials {
+            background-color: var(--cool-white);
+            overflow: hidden;
+        }
+
+        #testimonials h2 {
+            color: var(--purple);
+            margin-bottom: 60px;
+        }
+
+        .testimonial-slider-wrapper {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial-slider {
+            display: flex;
+        }
+
+        .testimonial-slide {
+            width: 100%;
+            flex-shrink: 0;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .testimonial-quote {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--dark-gray);
+            max-width: 100%;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--light-purple);
+        }
+
+        .footer-wrapper {
+            position: relative;
+        }
+
+        #blueprint {
+            position: relative;
+            background-color: var(--cool-white);
+            z-index: 2;
+        }
+
+        .blueprint-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .blueprint-block {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .blueprint-icon {
+            margin-bottom: 20px;
+        }
+
+        .blueprint-icon svg {
+            width: 40px;
+            height: 40px;
+            color: var(--electric-purple);
+            stroke-width: 1.5;
+        }
+
+        .blueprint-block h3 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--purple);
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .blueprint-block p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--dark-gray);
+            max-width: 350px;
+            margin: 0 auto;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+        }
+
+        /* --- Footer --- */
+        footer {
+            position: sticky;
+            bottom: 0;
+            z-index: 1;
+            padding: 120px 8% 50px;
+            background-color: var(--cool-white);
+            color: var(--dark-gray);
+            overflow: hidden;
+        }
+
+        .footer-trace-svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .footer-trace-path {
+            stroke: var(--electric-purple);
+            stroke-width: 1.5;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .footer-cta h2 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            color: var(--dark-gray);
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(127, 90, 240, 0.2);
+        }
+
+        .footer-cta p {
+            font-size: 1.2rem;
+            max-width: 400px;
+            margin-bottom: 30px;
+            color: rgba(22, 22, 26, 0.7);
+        }
+
+        .footer-contact-button {
+            display: inline-block;
+            padding: 16px 40px;
+            border: 2px solid var(--electric-purple);
+            border-radius: 8px;
+            color: var(--electric-purple);
+            text-decoration: none;
+            font-weight: 600;
+            background: transparent;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(127, 90, 240, 0.3);
+        }
+
+        .footer-contact-button:hover {
+            background-color: var(--electric-purple);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(127, 90, 240, 0.5);
+        }
+        
+        .footer-contact-button:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .footer-links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: var(--dark-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            text-decoration: none;
+            color: rgba(22, 22, 26, 0.7);
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--electric-purple);
+        }
+
+        .footer-bottom {
+            padding-top: 50px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: rgba(22, 22, 26, 0.5);
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-socials a svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--dark-gray);
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+
+        .footer-socials a:hover svg {
+            opacity: 1;
+            fill: var(--electric-purple);
+            transform: scale(1.1);
+        }
+
+        /* Animation utility classes */
+        .reveal-mask {
+            clip-path: inset(0 100% 0 0);
+        }
+
+        .fade-in-anim {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 900px) {
+            .horizontal-track {
+                width: auto;
+                flex-direction: column;
+            }
+
+            .horizontal-track>section {
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+                background-color: transparent;
+                padding: 120px 8%;
+            }
+
+            #portfolio {
+                padding: 120px 0;
+            }
+
+            .horizontal-scroll-wrapper {
+                height: auto !important;
+            }
+
+            #about h2 {
+                white-space: normal;
+            }
+
+            .services-content-wrapper {
+                flex-direction: column;
+                gap: 50px;
+            }
+
+            .services-heading {
+                width: 100%;
+                position: relative;
+                transform: none !important;
+            }
+
+            .cards-container {
+                position: relative;
+                transform: none !important;
+                opacity: 1;
+                width: 100%;
+                right: auto;
+                flex-direction: column;
+            }
+
+            .service-card {
+                opacity: 1;
+                transform: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 60px;
+            }
+
+            .footer-cta p {
+                margin: 0 auto 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 80px 5%;
+            }
+
+            .horizontal-track>section {
+                padding: 80px 5%;
+            }
+
+            #portfolio {
+                padding: 80px 0;
+            }
+
+            #portfolio h2 {
+                position: relative;
+                transform: none;
+                left: auto;
+                top: auto;
+                margin-bottom: 30px;
+                font-size: clamp(2.5rem, 8vw, 3.5rem);
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, 250px);
+                margin-top: 40px;
+            }
+
+            #projects h2 {
+                position: relative;
+                transform: none;
+                left: auto;
+                top: auto;
+                z-index: 1;
+                font-size: clamp(2.5rem, 8vw, 3.5rem);
+                margin-bottom: 20px;
+            }
+
+            .item-1,
+            .item-2,
+            .item-3,
+            .item-4,
+            .item-5,
+            .item-6 {
+                grid-column: 1 / 2;
+                grid-row: auto;
+            }
+
+            .blueprint-content {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .footer-bottom {
+                flex-direction: column-reverse;
+                gap: 30px;
+            }
+
+            .footer-links-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .portfolio-item {
+                width: 40vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-item {
+                width: 60vw;
+            }
+
+            #projects h2 {
+                font-size: clamp(2rem, 10vw, 3rem);
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-controller"></div>
+    <canvas id="three-canvas"></canvas>
+    <div class="blur-overlay"></div>
+
+    <div class="loader">Loading...</div>
+
+    <main>
+        <section id="hero">
+            <h1 data-splitting>Q DEVELOPERS</h1>
+            <p class="hero-description" data-splitting>Crafting Calicut's skyline with a commitment to quality and
+                innovation. Your vision, built to last. 🏗️</p>
+            <a href="#contact" class="hero-cta">Start Your Project</a>
+        </section>
+
+        <div class="horizontal-scroll-wrapper">
+            <div class="horizontal-track">
+
+                <section id="about">
+                    <div>
+                        <h2 data-splitting>Crafting Landmarks, Building Dreams.</h2>
+                        <h3 class="about-subheading" data-splitting>Welcome to Kerala’s Finest Properties! 🏡</h3>
+                        <p class="about-text" data-splitting>We unveil a plethora of living spaces comprising luxury
+                            villas, flats, and apartments in Calicut City, each designed with an unwavering commitment
+                            to excellence, innovation, and sustainability. ✨</p>
+                    </div>
+                </section>
+
+                <section id="services">
+                    <div class="services-content-wrapper">
+                        <div class="services-heading">
+                            <h2 data-splitting>Our Expertise.</h2>
+                        </div>
+                        <div class="cards-container">
+                            <div class="service-card">
+                                <h3>Architectural Design 📐</h3>
+                                <p>Innovative and sustainable designs that blend aesthetics with functionality.</p>
+                            </div>
+                            <div class="service-card">
+                                <h3>Construction Works 🛠️</h3>
+                                <p>End-to-end services with a focus on quality materials and superior craft.</p>
+                            </div>
+                            <div class="service-card">
+                                <h3>Project Management 📋</h3>
+                                <p>Ensuring your vision is realized on time, on budget, and to the highest standards.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="portfolio">
+                    <div class="portfolio-marquee" id="marquee1">
+                        <div class="portfolio-track">
+                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                        </div>
+                    </div>
+                    <div class="portfolio-marquee" id="marquee2">
+                        <div class="portfolio-track">
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Home Exterior"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Minimalist House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Interior"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Home Exterior"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Minimalist House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Interior"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Home Exterior"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Minimalist House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Interior"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Home Exterior"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Minimalist House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Interior"></div>
+                        </div>
+                    </div>
+                    <h2 data-splitting>Our Portfolio.</h2>
+                </section>
+
+            </div>
+        </div>
+
+        <section id="projects">
+            <h2 data-splitting>Signature Projects.</h2>
+            <div class="bento-grid">
+                <div class="bento-item item-1">
+                    <div class="bento-text">Azure Heights</div>
+                    <p class="bento-desc">A 45-story luxury residential tower defining the city skyline.</p>
+                </div>
+                <div class="bento-item item-2">
+                    <div class="bento-text">The Orchid</div>
+                    <p class="bento-desc">Exclusive gated community of 20 modern villas with private pools.</p>
+                </div>
+                <div class="bento-item item-3">
+                    <div class="bento-text">Crimson Plaza</div>
+                    <p class="bento-desc">A premier commercial hub with retail spaces and corporate offices.</p>
+                </div>
+                <div class="bento-item item-4">
+                    <div class="bento-text">Greenway Villas</div>
+                    <p class="bento-desc">Eco-friendly homes designed for sustainable and green living.</p>
+                </div>
+                <div class="bento-item item-5">
+                    <div class="bento-text">Nexus Business Park</div>
+                    <p class="bento-desc">State-of-the-art IT park fostering innovation and collaboration.</p>
+                </div>
+                <div class="bento-item item-6">
+                    <div class="bento-text">Vista Residences</div>
+                    <p class="bento-desc">Affordable apartments offering modern amenities and city views.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials">
+            <h2 data-splitting>What Our Clients Say.</h2>
+            <div class="testimonial-slider-wrapper">
+                <div class="testimonial-slider">
+                    <div class="testimonial-slide">
+                        <p class="testimonial-quote">"Q Developers transformed our vision into a breathtaking reality. Their attention to detail and commitment to quality is unparalleled. We couldn't be happier with our new home."</p>
+                        <div class="testimonial-author">- The Sharma Family</div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="testimonial-quote">"Working with Q Developers was a seamless experience from start to finish. Their professionalism and project management skills are top-notch. Highly recommended for any large-scale project."</p>
+                        <div class="testimonial-author">- John Doe, CEO of Innovate Inc.</div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="testimonial-quote">"The team's dedication to sustainable building practices was a huge plus for us. They delivered an eco-friendly and beautiful commercial space that exceeded our expectations."</p>
+                        <div class="testimonial-author">- Priya Menon, Green Ventures</div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="testimonial-quote">"Q Developers transformed our vision into a breathtaking reality. Their attention to detail and commitment to quality is unparalleled. We couldn't be happier with our new home."</p>
+                        <div class="testimonial-author">- The Sharma Family</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="footer-wrapper">
+            <section id="blueprint">
+                <div class="blueprint-content">
+                    <div class="blueprint-block">
+                        <div class="blueprint-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </div>
+                        <h3>Our Vision 🔭</h3>
+                        <p>We see beyond structures; we envision
+                            landmarks. Our philosophy is to merge
+                            groundbreaking design with sustainable practices,
+                            creating spaces that inspire communities for
+                            generations to come.</p>
+                    </div>
+
+                    <div class="blueprint-block">
+                        <div class="blueprint-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 6V21M12 6L9 9M12 6L15 9" />
+                                <path d="M20.39 12.39L18 14.78M18 14.78L15.61 17.17M18 14.78L20.39 17.17" />
+                                <path d="M3.61 12.39L6 14.78M6 14.78L8.39 17.17M6 14.78L3.61 17.17" />
+                            </svg>
+                        </div>
+                        <h3>The Process ⚙️</h3>
+                        <p>Precision is our principle. From the initial
+                            sketch to the final fixture, every stage is
+                            meticulously planned and executed with cutting-edge
+                            technology and transparent communication.</p>
+                    </div>
+
+                    <div class="blueprint-block">
+                        <div class="blueprint-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M2 20h20" />
+                                <path d="M4 17.5V11a2 2 0 012-2h12a2 2 0 012 2v6.5" />
+                                <path d="M8 11V7a4 4 0 014-4h0a4 4 0 014 4v4" />
+                            </svg>
+                        </div>
+                        <h3>Execution 🏆</h3>
+                        <p>Our commitment is to tangible excellence.
+                            We transform complex blueprints into reality,
+                            delivering projects that stand as a testament to
+                            superior craftsmanship and unwavering quality.</p>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <svg class="footer-trace-svg" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid meet">
+                    <path class="footer-trace-path"
+                        d="M1100 350 Q 750 350 750 200 T 400 50 Q 200 50 100 150 T -100 350" />
+                </svg>
+                <div class="footer-grid">
+                    <div class="footer-cta">
+                        <h2 class="reveal-mask">Build The Future.</h2>
+                        <p class="reveal-mask">Have a project in mind? Let's collaborate and bring your
+                            vision to life. We're
+                            ready to build the next landmark. 🤝</p>
+                        <a href="mailto:contact@qdevelopers.com" class="footer-contact-button fade-in-anim">Get In
+                            Touch</a>
+                    </div>
+                    <div class="footer-links-grid">
+                        <div class="footer-section">
+                            <h4 class="reveal-mask">Company</h4>
+                            <ul>
+                                <li class="fade-in-anim"><a href="#about">About Us</a></li>
+                                <li class="fade-in-anim"><a href="#projects">Projects</a></li>
+                                <li class="fade-in-anim"><a href="#">Careers</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-section">
+                            <h4 class="reveal-mask">Services</h4>
+                            <ul>
+                                <li class="fade-in-anim"><a href="#services">Architecture</a></li>
+                                <li class="fade-in-anim"><a href="#services">Construction</a></li>
+                                <li class="fade-in-anim"><a href="#services">Management</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p class="fade-in-anim">&copy; 2025 Q Developers | Calicut, Kerala.</p>
+                    <div class="footer-socials">
+                        <a href="#" class="fade-in-anim" title="LinkedIn"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                            </svg></a>
+                        <a href="#" class="fade-in-anim" title="Twitter/X"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.616 1.922 2.392 3.32 4.491 3.365-1.657 1.299-3.756 2.072-6.049 1.733 1.83 1.189 4.011 1.868 6.353 1.868 7.618 0 11.922-6.425 11.5-12.274.847-.608 1.574-1.373 2.149-2.23z" />
+                            </svg></a>
+                        <a href="#" class="fade-in-anim" title="Instagram"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.069-4.85.069s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.012-3.584.07-4.85c.148-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.644-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.359 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.947s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.689-.072-4.948-.072zM12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z" />
+                            </svg></a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+
+        gsap.registerPlugin(ScrollTrigger);
+        const loader = document.querySelector('.loader');
+
+        const lenis = new Lenis({ lerp: 0.07, smoothWheel: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+
+        let scene, camera, renderer, qModel, cone1, cone2;
+
+        function initThree() {
+            const canvas = document.querySelector('#three-canvas');
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+            scene.add(ambientLight);
+
+            const spotLight1 = new THREE.SpotLight(0xffffff, 40, 20, Math.PI * 0.15, 0.5, 1);
+            spotLight1.position.set(8, 6, 8);
+            spotLight1.castShadow = true;
+            spotLight1.shadow.mapSize.width = 1024;
+            spotLight1.shadow.mapSize.height = 1024;
+            spotLight1.shadow.camera.near = 0.5;
+            spotLight1.shadow.camera.far = 30;
+            scene.add(spotLight1);
+
+            const spotLight2 = new THREE.SpotLight(0xffffff, 15, 20, Math.PI * 0.15, 0.5, 1);
+            spotLight2.position.set(-8, 3, 6);
+            scene.add(spotLight2);
+
+            const shadowMaterial = new THREE.ShadowMaterial({ opacity: 0.3 });
+            const shadowPlaneGeo = new THREE.PlaneGeometry(30, 30);
+            const shadowPlane = new THREE.Mesh(shadowPlaneGeo, shadowMaterial);
+            shadowPlane.position.z = -1;
+            shadowPlane.receiveShadow = true;
+            scene.add(shadowPlane);
+
+            createQModel();
+
+            if (qModel) {
+                spotLight1.target = qModel;
+                spotLight2.target = qModel;
+                scene.add(spotLight1.target);
+                scene.add(spotLight2.target);
+            }
+
+            const coneGeo = new THREE.ConeGeometry(3, 15, 32, 1, true);
+            coneGeo.translate(0, 7.5, 0); 
+            const coneMat = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.08,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            cone1 = new THREE.Mesh(coneGeo, coneMat);
+            cone1.position.copy(spotLight1.position);
+            scene.add(cone1);
+
+            cone2 = new THREE.Mesh(coneGeo, coneMat.clone());
+            cone2.position.copy(spotLight2.position);
+            scene.add(cone2);
+
+            const animate = () => {
+                if (cone1 && qModel) cone1.lookAt(qModel.position);
+                if (cone2 && qModel) cone2.lookAt(qModel.position);
+
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            };
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                ScrollTrigger.refresh(true);
+            });
+        }
+
+        function createQModel() {
+            const rotationAngle = -Math.PI / 4;
+            const outerCurve = new THREE.EllipseCurve(0, 0, 1.5, 1.5, 0, Math.PI * 2, false, rotationAngle);
+            const innerCurve = new THREE.EllipseCurve(0, 0, 0.8, 0.8, 0, Math.PI * 2, false, rotationAngle);
+            const oShape = new THREE.Shape(outerCurve.getPoints(128));
+            const holePath = new THREE.Path(innerCurve.getPoints(128));
+            oShape.holes.push(holePath);
+            const tailShape = new THREE.Shape();
+            const innerRadius = 0.8, outerRadius = 1.5;
+            const p1 = { x: innerRadius * 0.6, y: -innerRadius * 0.6 };
+            const p2 = { x: outerRadius * 1.3, y: -outerRadius * 1.3 };
+            const p3 = { x: p2.x - 0.4, y: p2.y + 0.1 };
+            const p4 = { x: p1.x - 0.3, y: p1.y + 0.05 };
+            tailShape.moveTo(p1.x, p1.y); tailShape.lineTo(p2.x, p2.y); tailShape.lineTo(p3.x, p3.y); tailShape.lineTo(p4.x, p4.y);
+
+            const extrudeSettings = { depth: 0.7, bevelEnabled: true, bevelSegments: 5, steps: 2, bevelSize: 0.1, bevelThickness: 0.1 };
+            const geometry = new THREE.ExtrudeGeometry([oShape, tailShape], extrudeSettings);
+            geometry.center();
+
+            const material = new THREE.MeshStandardMaterial({
+                color: new THREE.Color("#5E239D"),
+                metalness: 0.3,
+                roughness: 0.6
+            });
+            qModel = new THREE.Mesh(geometry, material);
+            qModel.castShadow = true;
+            scene.add(qModel);
+        }
+
+        function initAnimations() {
+            const splitTargets = document.querySelectorAll("[data-splitting]");
+            splitTargets.forEach(target => { new SplitType(target, { types: 'words, lines' }); });
+
+            gsap.from(qModel.scale, {
+                x: 0.1, y: 0.1, z: 0.1,
+                duration: 2.5,
+                ease: 'power3.out'
+            });
+
+            gsap.to(camera.position, {
+                z: 4.5,
+                scrollTrigger: {
+                    trigger: '#hero',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 1
+                }
+            });
+
+            const heroTl = gsap.timeline();
+            heroTl.to("#hero h1 .word, .hero-description .word", {
+                opacity: 1, filter: 'blur(0px)', y: 0,
+                duration: 1.2, stagger: 0.06,
+                ease: 'power3.out'
+            })
+                .to("#hero h1", { scale: 1.05, duration: 0.8, ease: 'power2.out', repeat: 1, yoyo: true }, "-=1.2")
+                .to(".hero-cta", {
+                    opacity: 1, y: 0,
+                    duration: 1, ease: 'power3.out'
+                }, "-=1");
+
+            gsap.to(".background-controller", {
+                opacity: 0,
+                ease: "power1.out",
+                scrollTrigger: {
+                    trigger: "body",
+                    start: "top top",
+                    end: "+=50%",
+                    scrub: 1
+                }
+            });
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 1
+                }
+            });
+            const easeType = 'power1.inOut';
+
+            tl.to(qModel.rotation, {
+                y: Math.PI * 2,
+                ease: 'none',
+                duration: 1
+            }, 0); 
+            tl.to(qModel.position, {
+                x: -5,
+                ease: 'power2.out',
+                duration: 3
+            }, 0); 
+            tl.to(qModel.position, {
+                x: 5,
+                ease: easeType,
+                duration: 12
+            });
+            tl.to(qModel.position, {
+                y: -3,
+                x: 5,
+                ease: easeType,
+                duration: 5
+            });
+            tl.to(qModel.position, {
+                y: -8,
+                x: -4,
+                z: -2,
+                ease: easeType,
+                duration: 4
+            });
+            tl.to(qModel.rotation, {
+                x: 0.5,
+                z: 0.2,
+                ease: easeType,
+                duration: 4
+            }, "<");
+
+            // --- DESKTOP ANIMATIONS ---
+            if (window.innerWidth > 900) {
+                const horizontalSection = document.querySelector('.horizontal-track');
+                const scrollWrapper = document.querySelector('.horizontal-scroll-wrapper');
+                
+                const horizontalTl = gsap.to(horizontalSection, {
+                    x: () => `-${horizontalSection.scrollWidth - scrollWrapper.offsetWidth}px`,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: scrollWrapper,
+                        start: "top top",
+                        pin: true,
+                        scrub: 1,
+                        end: () => `+=${horizontalSection.scrollWidth - scrollWrapper.offsetWidth + 2000}`,
+                        invalidateOnRefresh: true
+                    }
+                });
+
+                gsap.to("#about .word", {
+                    y: 0, opacity: 1, filter: 'blur(0px)', stagger: 0.03, ease: 'power3.out',
+                    scrollTrigger: { containerAnimation: horizontalTl, trigger: "#about", start: "left 80%" }
+                });
+
+                gsap.set('.cards-container', { position: 'absolute', right: '8%', transform: 'translateX(100%)', opacity: 0 });
+                gsap.set('.service-card', { y: 50, opacity: 0 });
+
+                const servicesTl = gsap.timeline({
+                    scrollTrigger: {
+                        containerAnimation: horizontalTl,
+                        trigger: "#services",
+                        start: "left 60%", 
+                        end: "right 70%", 
+                        scrub: true,
+                    }
+                });
+
+                servicesTl
+                    .to(".services-heading", { xPercent: -50, ease: "power1.inOut" })
+                    .fromTo(".cards-container", { xPercent: 100, opacity: 0 }, { xPercent: -50, opacity: 1, ease: "power2.out" })
+                    .add("card2_starts", "-=0.3")
+                    .add("card3_starts", "-=0.1")
+                    .staggerFromTo(".service-card", 0.5, { y: 50, opacity: 0 }, { y: 0, opacity: 1, ease: 'back.out(1.7)' }, 0.2, "-=0.5")
+                    .to(".blur-overlay", { 
+                        opacity: 1, 
+                        backdropFilter: 'blur(5px)', 
+                        ease: 'power1.inOut' 
+                    }, "card2_starts")
+                    .to(".blur-overlay", { 
+                        opacity: 0, 
+                        backdropFilter: 'blur(0px)', 
+                        ease: 'power1.inOut' 
+                    }, "card3_starts");
+
+
+                gsap.to(".services-heading h2", {
+                    opacity: 0,
+                    filter: 'blur(15px)',
+                    ease: 'power1.in',
+                    scrollTrigger: {
+                        containerAnimation: horizontalTl,
+                        trigger: "#services",
+                        start: "left 20%",
+                        end: "left 5%",
+                        scrub: 1,
+                    }
+                });
+
+                gsap.to("#portfolio h2 .word", {
+                    y: 0, opacity: 1, filter: 'blur(0px)', stagger: 0.05, ease: 'power3.out',
+                    scrollTrigger: { containerAnimation: horizontalTl, trigger: "#portfolio", start: "left 70%" }
+                });
+                gsap.to("#marquee1 .portfolio-track", {
+                    xPercent: -50, ease: "none",
+                    scrollTrigger: {
+                        containerAnimation: horizontalTl, trigger: "#portfolio",
+                        start: "left right", end: "right left", scrub: 1.5
+                    }
+                });
+                gsap.to("#marquee2 .portfolio-track", {
+                    xPercent: 0, ease: "none",
+                    scrollTrigger: {
+                        containerAnimation: horizontalTl, trigger: "#portfolio",
+                        start: "left right", end: "right left", scrub: 1.5
+                    }
+                });
+
+            } else { // --- MOBILE ANIMATIONS ---
+                gsap.utils.toArray('#services h2 .word').forEach(word => {
+                    gsap.from(word.parentNode, {
+                        y: 30, opacity: 0, filter: 'blur(8px)', duration: 0.8, ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: word.closest('section'),
+                            start: "top 80%",
+                        }
+                    });
+                });
+
+                gsap.from("#about .word", {
+                    y: 30, opacity: 0, filter: 'blur(8px)', duration: 0.8, ease: 'power3.out', stagger: 0.05,
+                    scrollTrigger: {
+                        trigger: "#about",
+                        start: "top 80%",
+                    }
+                });
+
+                gsap.from(".service-card", {
+                    y: 50, opacity: 0, stagger: 0.15, duration: 0.8, ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: ".cards-container",
+                        start: "top 80%"
+                    }
+                });
+                
+                const mobilePortfolioTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#portfolio",
+                        start: "top top",
+                        pin: true,
+                        scrub: 1,
+                        end: "+=2000"
+                    }
+                });
+                mobilePortfolioTl.from("#portfolio h2 .word", { y: 30, opacity: 0, filter: 'blur(8px)', stagger: 0.1 })
+                    .to("#marquee1 .portfolio-track", { xPercent: -50 }, 0)
+                    .to("#marquee2 .portfolio-track", { xPercent: 0 }, 0);
+            }
+
+            const projectsTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#projects",
+                    start: "top top",
+                    end: "+=120%",
+                    pin: true,
+                    scrub: 1,
+                }
+            });
+            projectsTl.to("#projects h2", {
+                opacity: 0,
+                scale: 0.9,
+                ease: 'power1.in',
+            }, 0);
+            projectsTl.to(".bento-item", {
+                opacity: 1,
+                transform: 'scale(1) rotateX(0deg) translateY(0px)',
+                stagger: { amount: 0.5 },
+                ease: "none",
+            }, 0);
+            
+            const slides = gsap.utils.toArray(".testimonial-slide");
+            const totalSlides = slides.length / 2;
+
+            gsap.set(".testimonial-slider", { xPercent: 0 });
+
+            gsap.to(".testimonial-slider", {
+                xPercent: -100 * totalSlides,
+                duration: 15 * totalSlides,
+                ease: "none",
+                repeat: -1,
+                modifiers: {
+                    xPercent: gsap.utils.wrap(-100 * totalSlides, 0)
+                }
+            });
+
+
+            // gsap.from(".blueprint-block", {
+            //     opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power3.out",
+            //     scrollTrigger: {
+            //         trigger: "#blueprint",
+            //         start: "top 70%",
+            //     }
+            // });
+
+             const footerContentTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "footer",
+                    start: "top 80%",
+                }
+            });
+            footerContentTl.to("footer .reveal-mask", {
+                clipPath: 'inset(0 0% 0 0)',
+                duration: 1.5,
+                stagger: 0.2,
+                ease: 'power4.out'
+            });
+            footerContentTl.to("footer .fade-in-anim", {
+                opacity: 1, y: 0, duration: 1, stagger: 0.1, ease: 'power3.out'
+            }, "-=1.2");
+            footerContentTl.to(".footer-trace-path", {
+                strokeDashoffset: 0,
+                duration: 3,
+                ease: 'power1.inOut'
+            }, "-=1.5");
+        }
+
+        window.addEventListener('load', () => {
+            initThree();
+            initAnimations();
+            loader.classList.add('hidden');
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+
+</html>
+
