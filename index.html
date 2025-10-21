@@ -371,10 +371,6 @@
             width: fit-content;
         }
 
-        #marquee2 .portfolio-track {
-            transform: translateX(-50%);
-        }
-
         .portfolio-item {
             width: 25vw;
             flex-shrink: 0;
@@ -628,13 +624,12 @@
 
         /* --- Footer --- */
         footer {
-            position: sticky;
-            bottom: 0;
-            z-index: 1;
             padding: 120px 8% 50px;
             background-color: var(--cool-white);
             color: var(--dark-gray);
             overflow: hidden;
+            position: relative;
+            z-index: 1;
         }
 
         .footer-trace-svg {
@@ -961,13 +956,19 @@
                             <div class="service-card">
                                 <h3>Architectural Design 📐</h3>
                                 <p>Innovative and sustainable designs that blend aesthetics with functionality.</p>
+                                <p>Innovative and sustainable designs that blend aesthetics with functionality.</p>
+                                <p>Innovative and sustainable designs that blend aesthetics with functionality.</p>
                             </div>
                             <div class="service-card">
                                 <h3>Construction Works 🛠️</h3>
                                 <p>End-to-end services with a focus on quality materials and superior craft.</p>
+                                <p>End-to-end services with a focus on quality materials and superior craft.</p>
+                                <p>End-to-end services with a focus on quality materials and superior craft.</p>
                             </div>
                             <div class="service-card">
                                 <h3>Project Management 📋</h3>
+                                <p>Ensuring your vision is realized on time, on budget, and to the highest standards.</p>
+                                <p>Ensuring your vision is realized on time, on budget, and to the highest standards.</p>
                                 <p>Ensuring your vision is realized on time, on budget, and to the highest standards.</p>
                             </div>
                         </div>
@@ -979,7 +980,7 @@
                         <div class="portfolio-track">
                              <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-527S-qXHS7b_j7-p0_d_0_p_e_r_g_0_o_u_t_g_e_r/svg%3E/svg%3E"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
@@ -1415,7 +1416,7 @@
                         start: "top top",
                         pin: true,
                         scrub: 1,
-                        end: () => `+=${horizontalSection.scrollWidth - scrollWrapper.offsetWidth + 2000}`,
+                        end: () => `+=${horizontalSection.scrollWidth - scrollWrapper.offsetWidth}`,
                         invalidateOnRefresh: true
                     }
                 });
@@ -1468,25 +1469,33 @@
                         scrub: 1,
                     }
                 });
+                
+                // --- MODIFIED PORTFOLIO ANIMATION ---
+                const portfolioTl = gsap.timeline({
+                    scrollTrigger: {
+                        containerAnimation: horizontalTl,
+                        trigger: "#portfolio",
+                        start: "left 75%",
+                        end: "left center",
+                        scrub: 1,
+                    }
+                });
+                portfolioTl.from("#portfolio h2 .word", { y: 30, opacity: 0, filter: 'blur(8px)', stagger: 0.1 });
+                
+                const portfolioMarqueeTl = gsap.timeline({
+                    scrollTrigger: {
+                        containerAnimation: horizontalTl,
+                        trigger: "#portfolio",
+                        start: "left center",
+                        end: "right left",
+                        scrub: 1.5,
+                    }
+                });
 
-                gsap.to("#portfolio h2 .word", {
-                    y: 0, opacity: 1, filter: 'blur(0px)', stagger: 0.05, ease: 'power3.out',
-                    scrollTrigger: { containerAnimation: horizontalTl, trigger: "#portfolio", start: "left 70%" }
-                });
-                gsap.to("#marquee1 .portfolio-track", {
-                    xPercent: -50, ease: "none",
-                    scrollTrigger: {
-                        containerAnimation: horizontalTl, trigger: "#portfolio",
-                        start: "left right", end: "right left", scrub: 1.5
-                    }
-                });
-                gsap.to("#marquee2 .portfolio-track", {
-                    xPercent: 0, ease: "none",
-                    scrollTrigger: {
-                        containerAnimation: horizontalTl, trigger: "#portfolio",
-                        start: "left right", end: "right left", scrub: 1.5
-                    }
-                });
+                portfolioMarqueeTl
+                    .from("#marquee1 .portfolio-track", { xPercent: -50 }, 0)
+                    .from("#marquee2 .portfolio-track", { xPercent: 50 }, 0);
+
 
             } else { // --- MOBILE ANIMATIONS ---
                 gsap.utils.toArray('#services h2 .word').forEach(word => {
@@ -1525,8 +1534,8 @@
                     }
                 });
                 mobilePortfolioTl.from("#portfolio h2 .word", { y: 30, opacity: 0, filter: 'blur(8px)', stagger: 0.1 })
-                    .to("#marquee1 .portfolio-track", { xPercent: -50 }, 0)
-                    .to("#marquee2 .portfolio-track", { xPercent: 0 }, 0);
+                    .from("#marquee1 .portfolio-track", { xPercent: -50 }, 0.25)
+                    .from("#marquee2 .portfolio-track", { xPercent: 50 }, 0.25);
             }
 
             const projectsTl = gsap.timeline({
@@ -1566,13 +1575,13 @@
             });
 
 
-            // gsap.from(".blueprint-block", {
-            //     opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power3.out",
-            //     scrollTrigger: {
-            //         trigger: "#blueprint",
-            //         start: "top 70%",
-            //     }
-            // });
+            gsap.from(".blueprint-block", {
+                opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "#blueprint",
+                    start: "top 70%",
+                }
+            });
 
              const footerContentTl = gsap.timeline({
                 scrollTrigger: {
