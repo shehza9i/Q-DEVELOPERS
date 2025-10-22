@@ -546,104 +546,89 @@
             background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080');
         }
         
-        #testimonials {
+        /* --- REMOVED: Testimonials Section --- */
+
+        /* --- ADDED: Stacked Cards Section --- */
+        #stacked-cards {
             background-color: var(--cool-white);
             overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        #testimonials h2 {
+        #stacked-cards h2 {
             color: var(--purple);
             margin-bottom: 60px;
-        }
-
-        .testimonial-slider-wrapper {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
             position: relative;
+            z-index: 5; /* Above cards */
         }
 
-        .testimonial-slider {
-            display: flex;
+        .cards-stack-wrapper {
+            position: relative;
+            width: 400px; /* Max-width */
+            height: 500px; /* Height */
+            max-width: 90vw;
+            max-height: 70vh;
         }
 
-        .testimonial-slide {
+        .stacked-card {
+            position: absolute;
             width: 100%;
-            flex-shrink: 0;
-            padding: 0 20px;
+            height: 100%;
+            padding: 40px 35px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            
+            /* For stacking */
+            transform-origin: center;
+            opacity: 0;
+            /* REMOVED: transform: scale(0.5) translateY(50px); */
+            will-change: transform, opacity;
         }
 
-        .testimonial-quote {
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
+        .stacked-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--purple);
             font-family: 'Playfair Display', serif;
-            font-style: italic;
-            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+
+        .stacked-card p {
+            font-size: 1rem;
+            color: #333;
             max-width: 100%;
             line-height: 1.6;
-            margin-bottom: 25px;
         }
 
-        .testimonial-author {
-            font-weight: 600;
-            color: var(--light-purple);
-        }
+        /* Stacking order */
+        .card-1 { z-index: 1; }
+        .card-2 { z-index: 2; }
+        .card-3 { z-index: 3; }
 
         .footer-wrapper {
             position: relative;
         }
 
-        #blueprint {
-            position: relative;
-            background-color: var(--cool-white);
-            z-index: 2;
-        }
-
-        .blueprint-content {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .blueprint-block {
-            text-align: center;
-            opacity: 0;
-            transform: translateY(50px);
-        }
-
-        .blueprint-icon {
-            margin-bottom: 20px;
-        }
-
-        .blueprint-icon svg {
-            width: 40px;
-            height: 40px;
-            color: var(--electric-purple);
-            stroke-width: 1.5;
-        }
-
-        .blueprint-block h3 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            color: var(--purple); 
-            font-family: 'Playfair Display', serif;
-            font-weight: 800;
-            line-height: 1.2;
-            white-space: nowrap;
-        }
-
-        .blueprint-block p {
-            font-size: 1rem;
-            line-height: 1.7;
-            color: var(--dark-gray); 
-            max-width: 350px;
-            margin: 0 auto;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 400;
-        }
+        /* --- REMOVED: Blueprint Section --- */
 
         /* --- Footer --- */
         footer {
@@ -1093,79 +1078,29 @@
             </div>
         </section>
 
-        <section id="testimonials">
-            <h2 data-splitting>What Our Clients Say.</h2>
-            <div class="testimonial-slider-wrapper">
-                <div class="testimonial-slider">
-                    <div class="testimonial-slide">
-                        <p class="testimonial-quote">"Q Developers transformed our vision into a breathtaking reality. Their attention to detail and commitment to quality is unparalleled. We couldn't be happier with our new home."</p>
-                        <div class="testimonial-author">- The Sharma Family</div>
-                    </div>
-                    <div class="testimonial-slide">
-                        <p class="testimonial-quote">"Working with Q Developers was a seamless experience from start to finish. Their professionalism and project management skills are top-notch. Highly recommended for any large-scale project."</p>
-                        <div class="testimonial-author">- John Doe, CEO of Innovate Inc.</div>
-                    </div>
-                    <div class="testimonial-slide">
-                        <p class="testimonial-quote">"The team's dedication to sustainable building practices was a huge plus for us. They delivered an eco-friendly and beautiful commercial space that exceeded our expectations."</p>
-                        <div class="testimonial-author">- Priya Menon, Green Ventures</div>
-                    </div>
-                    <div class="testimonial-slide">
-                        <p class="testimonial-quote">"Q Developers transformed our vision into a breathtaking reality. Their attention to detail and commitment to quality is unparalleled. We couldn't be happier with our new home."</p>
-                        <div class="testimonial-author">- The Sharma Family</div>
-                    </div>
+        <!-- REMOVED #testimonials section -->
+        
+        <!-- ADDED #stacked-cards section -->
+        <section id="stacked-cards">
+            <h2 data-splitting>Why Choose Us?</h2>
+            <div class="cards-stack-wrapper">
+                <div class="stacked-card card-1">
+                    <h3><span class="card-icon">🏆</span>Unmatched Quality</h3>
+                    <p>We don't just build; we craft. Using only premium materials and the finest artisans, we ensure every detail is a testament to durability and excellence.</p>
+                </div>
+                <div class="stacked-card card-2">
+                    <h3><span class="card-icon">⏱️</span>On-Time Delivery</h3>
+                    <p>Your time is valuable. Our meticulous project management guarantees that your project is delivered on schedule, every time, without compromise.</p>
+                </div>
+                <div class="stacked-card card-3">
+                    <h3><span class="card-icon">💡</span>Innovative Design</h3>
+                    <p>Our in-house architects and designers are visionaries who blend modern aesthetics with timeless functionality, creating spaces that inspire.</p>
                 </div>
             </div>
         </section>
-        
+
         <div class="footer-wrapper">
-            <section id="blueprint">
-                <div class="blueprint-content">
-                    <div class="blueprint-block">
-                        <div class="blueprint-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" />
-                                <circle cx="12" cy="12" r="3" />
-                            </svg>
-                        </div>
-                        <h3>Our Vision 🔭</h3>
-                        <p>We see beyond structures; we envision
-                            landmarks. Our philosophy is to merge
-                            groundbreaking design with sustainable practices,
-                            creating spaces that inspire communities for
-                            generations to come.</p>
-                    </div>
-
-                    <div class="blueprint-block">
-                        <div class="blueprint-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 6V21M12 6L9 9M12 6L15 9" />
-                                <path d="M20.39 12.39L18 14.78M18 14.78L15.61 17.17M18 14.78L20.39 17.17" />
-                                <path d="M3.61 12.39L6 14.78M6 14.78L8.39 17.17M6 14.78L3.61 17.17" />
-                            </svg>
-                        </div>
-                        <h3>The Process ⚙️</h3>
-                        <p>Precision is our principle. From the initial
-                            sketch to the final fixture, every stage is
-                            meticulously planned and executed with cutting-edge
-                            technology and transparent communication.</p>
-                    </div>
-
-                    <div class="blueprint-block">
-                        <div class="blueprint-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M2 20h20" />
-                                <path d="M4 17.5V11a2 2 0 012-2h12a2 2 0 012 2v6.5" />
-                                <path d="M8 11V7a4 4 0 014-4h0a4 4 0 014 4v4" />
-                            </svg>
-                        </div>
-                        <h3>Execution 🏆</h3>
-                        <p>Our commitment is to tangible excellence.
-                            We transform complex blueprints into reality,
-                            delivering projects that stand as a testament to
-                            superior craftsmanship and unwavering quality.</p>
-                    </div>
-                </div>
-            </section>
+            <!-- REMOVED #blueprint section -->
 
             <footer>
                 <svg class="footer-trace-svg" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid meet">
@@ -1623,29 +1558,107 @@
             }, 0);
             
             // --- TESTIMONIALS SECTION ---
-            const slides = gsap.utils.toArray(".testimonial-slide");
-            const totalSlides = slides.length / 2; 
-
-            gsap.set(".testimonial-slider", { xPercent: 0 });
-
-            gsap.to(".testimonial-slider", {
-                xPercent: -100 * totalSlides,
-                duration: 15 * totalSlides,
-                ease: "none",
-                repeat: -1,
-                modifiers: {
-                    xPercent: gsap.utils.wrap(-100 * totalSlides, 0)
+            // --- REMOVED: Testimonials JS ---
+            
+            // --- ADDED: STACKED CARDS SECTION ---
+            const stackedCardsTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#stacked-cards",
+                    start: "top top",
+                    end: "+=2500", // 2500px of scroll
+                    pin: true,
+                    scrub: 1,
                 }
             });
+
+            // Animate heading in
+            stackedCardsTl.from("#stacked-cards h2 .word", {
+                y: 30, opacity: 0, filter: 'blur(8px)', stagger: 0.05,
+                ease: 'power3.out'
+            });
+
+            // --- CHANGED: Animate cards in, "fanning" from the bottom ---
+            const cardInEase = 'back.out(1.4)'; // Use a 'back' ease for a nice pop
+            const cardInTime = 1; // Slightly longer duration
+            const cardInStagger = 0.2; // Time between each card
+            
+            // Set initial state for cards
+            gsap.set(".card-1", { yPercent: 120, xPercent: -10, opacity: 0, rotate: -8, scale: 0.8, filter: 'blur(5px)' });
+            gsap.set(".card-2", { yPercent: 120, xPercent: 0, opacity: 0, rotate: 0, scale: 0.8, filter: 'blur(5px)' });
+            gsap.set(".card-3", { yPercent: 120, xPercent: 10, opacity: 0, rotate: 8, scale: 0.8, filter: 'blur(5px)' });
+            
+            // Bottom card (card-1) animates in
+            stackedCardsTl.to(".card-1", {
+                yPercent: 0, xPercent: 0, opacity: 1, rotate: 0,
+                scale: 0.9, // Lands at 90% scale
+                filter: 'blur(0px)',
+                ease: cardInEase,
+                duration: cardInTime
+            }, "-=0.5"); // Start slightly before heading finishes
+
+            // Middle card (card-2) animates in
+            stackedCardsTl.to(".card-2", {
+                yPercent: 0, xPercent: 0, opacity: 1, rotate: 0,
+                scale: 0.95, // Lands at 95% scale
+                filter: 'blur(0px)',
+                ease: cardInEase,
+                duration: cardInTime
+            }, `-=${cardInTime - cardInStagger}`); // Staggered start
+
+            // Top card (card-3) animates in
+            stackedCardsTl.to(".card-3", {
+                yPercent: 0, xPercent: 0, opacity: 1, rotate: 0,
+                scale: 1, // Lands at 100% scale
+                filter: 'blur(0px)',
+                ease: cardInEase,
+                duration: cardInTime
+            }, `-=${cardInTime - cardInStagger}`); // Staggered start
+
+
+            // Add a pause in the middle
+            stackedCardsTl.add("pause", "+=1.0"); // Wait for 1.0 "time" units (Longer pause)
+
+            // Animate heading out
+            stackedCardsTl.to("#stacked-cards h2", {
+                opacity: 0,
+                y: -30,
+                filter: 'blur(8px)',
+                ease: 'power1.in'
+            }, "pause");
+
+            // --- CHANGED: Animate cards "un-stacking" one by one with more rotation/direction ---
+            const cardOutEase = 'power2.inOut'; // Smoother ease
+            const cardOutStagger = 0.3; // How much to wait between each card leaving (Slower)
+
+            stackedCardsTl.to(".card-3", { // Top card
+                xPercent: 150, // Fly right
+                yPercent: -50,
+                rotate: 25, // More rotation
+                opacity: 0,
+                filter: 'blur(10px)',
+                ease: cardOutEase
+            }, "pause");
+
+            stackedCardsTl.to(".card-2", { // Middle card
+                xPercent: -150, // Fly left
+                yPercent: -20,
+                rotate: -25, // More rotation
+                opacity: 0,
+                filter: 'blur(10px)',
+                ease: cardOutEase
+            }, `pause+=${cardOutStagger}`); // Stagger exit
+
+            stackedCardsTl.to(".card-1", { // Bottom card
+                xPercent: 120, // Fly right (less than top)
+                yPercent: 30, // Fly slightly down
+                rotate: 15,
+                opacity: 0,
+                filter: 'blur(10px)',
+                ease: cardOutEase
+            }, `pause+=${cardOutStagger * 2}`); // Stagger exit
 
             // --- BLUEPRINT & FOOTER ANIMATIONS ---
-            gsap.from(".blueprint-block", {
-                opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power3.out",
-                scrollTrigger: {
-                    trigger: "#blueprint",
-                    start: "top 70%",
-                }
-            });
+            // --- REMOVED: Blueprint JS ---
             
             // --- FOOTER REVEAL ANIMATION ---
             gsap.from(".footer-wrapper", {
@@ -1682,10 +1695,7 @@
         }
 
         window.addEventListener('load', () => {
-            // Duplicate testimonial slides for seamless loop
-            const slider = document.querySelector(".testimonial-slider");
-            const slides = slider.innerHTML;
-            slider.innerHTML += slides;
+            // --- REMOVED: Duplicate testimonial slides ---
 
             initThree();
             initAnimations();
@@ -1694,8 +1704,12 @@
         });
     </script>
 </body>
-
 </html>
+
+
+
+
+
 
 
 
