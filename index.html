@@ -206,7 +206,7 @@
 
         .horizontal-track {
             display: flex;
-            width: 400%;
+            width: 300%;
             will-change: transform;
         }
 
@@ -325,10 +325,11 @@
         }
 
         #portfolio h2 {
+            /* This is now the main heading that sticks */
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); /* Will be controlled by GSAP */
             z-index: 10;
             margin: 0;
             pointer-events: none;
@@ -338,12 +339,25 @@
             font-size: 4.5rem;
             text-align: center;
             width: 100%;
+            opacity: 0; /* GSAP will animate this */
+            will-change: transform, opacity;
         }
 
+        /* ADDED: Styles for Marquees */
         .portfolio-marquee {
             width: 100vw;
-            position: relative;
-            margin: 4vh 0;
+            position: absolute;
+            left: 0;
+            /* margin: 4vh 0; */ /* Removed margin */
+            opacity: 0; /* GSAP will animate this */
+            will-change: transform, opacity;
+        }
+
+        #marquee1 {
+            top: 10%; /* Position top marquee further up */
+        }
+        #marquee2 {
+            bottom: 10%; /* Position bottom marquee further down */
         }
 
         .portfolio-marquee::before,
@@ -352,23 +366,32 @@
             position: absolute;
             top: 0;
             height: 100%;
-            width: 15%;
+            width: 20%; /* Widened the fade effect */
             z-index: 2;
         }
 
         .portfolio-marquee::before {
             left: 0;
-            background: linear-gradient(to right, var(--cool-white), transparent);
+            /* Removed glassmorphism effect */
+            background: linear-gradient(to right, var(--cool-white) 20%, transparent);
+            /* backdrop-filter: blur(8px); */
         }
 
         .portfolio-marquee::after {
             right: 0;
-            background: linear-gradient(to left, var(--cool-white), transparent);
+            /* Removed glassmorphism effect */
+            background: linear-gradient(to left, var(--cool-white) 20%, transparent);
+            /* backdrop-filter: blur(8px); */
         }
 
         .portfolio-track {
             display: flex;
             width: fit-content;
+            will-change: transform;
+        }
+
+        #marquee2 .portfolio-track {
+            transform: translateX(-50%); /* Start position for right-to-left scroll */
         }
 
         .portfolio-item {
@@ -388,7 +411,7 @@
         .portfolio-item:hover img {
             transform: scale(1.05);
         }
-
+        
         /* --- Signature Projects Section (Bento Grid) --- */
         #projects {
             background-color: transparent;
@@ -605,7 +628,7 @@
         .blueprint-block h3 {
             font-size: 2.2rem;
             margin-bottom: 15px;
-            color: var(--purple);
+            color: var(--purple); 
             font-family: 'Playfair Display', serif;
             font-weight: 800;
             line-height: 1.2;
@@ -615,7 +638,7 @@
         .blueprint-block p {
             font-size: 1rem;
             line-height: 1.7;
-            color: var(--dark-gray);
+            color: var(--dark-gray); 
             max-width: 350px;
             margin: 0 auto;
             font-family: 'Poppins', sans-serif;
@@ -787,7 +810,22 @@
             }
 
             #portfolio {
-                padding: 120px 0;
+                padding: 120px 8%; 
+                /* Re-hide marquees on mobile if not needed */
+                overflow: hidden; 
+            }
+
+            #portfolio h2 {
+                /* On mobile, heading is not sticky */
+                position: relative;
+                transform: none; 
+                opacity: 1; /* Make visible by default */
+                font-size: clamp(2.5rem, 8vw, 3.5rem);
+            }
+
+            /* Hide marquees on mobile */
+            .portfolio-marquee {
+                display: none;
             }
 
             .horizontal-scroll-wrapper {
@@ -844,7 +882,7 @@
             }
 
             #portfolio {
-                padding: 80px 0;
+                padding: 80px 5%;
             }
 
             #portfolio h2 {
@@ -852,7 +890,7 @@
                 transform: none;
                 left: auto;
                 top: auto;
-                margin-bottom: 30px;
+                margin-bottom: 0; 
                 font-size: clamp(2.5rem, 8vw, 3.5rem);
             }
 
@@ -896,17 +934,9 @@
                 grid-template-columns: 1fr;
                 gap: 30px;
             }
-
-            .portfolio-item {
-                width: 40vw;
-            }
         }
 
         @media (max-width: 480px) {
-            .portfolio-item {
-                width: 60vw;
-            }
-
             #projects h2 {
                 font-size: clamp(2rem, 10vw, 3rem);
             }
@@ -975,25 +1005,31 @@
                     </div>
                 </section>
 
+                <!-- ADDED: Marquee HTML structure -->
                 <section id="portfolio">
                     <div class="portfolio-marquee" id="marquee1">
                         <div class="portfolio-track">
                              <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-527S-qXHS7b_j7-p0_d_0_p_e_r_g_0_o_u_t_g_e_r/svg%3E/svg%3E"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="httpsfoo://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <!-- Added 5 new images -->
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1558036117-15d82a90b9b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Interior Design"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Living Room"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1572120360610-d971b9d7767c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="House Exterior"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Kitchen"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1592595896551-89e6f1647846?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Luxury Home"></div>
+                            <!-- Original duplicate images -->
+                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <div class="portfolio-item"><img src="httpsD://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
+                            <!-- Added 5 new images (duplicates) -->
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1558036117-15d82a90b9b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Interior Design"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Living Room"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1572120360610-d971b9d7767c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="House Exterior"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Kitchen"></div>
+                            <div class="portfolio-item"><img src="httpsThis://images.unsplash.com/photo-1592595896551-89e6f1647846?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Luxury Home"></div>
                         </div>
                     </div>
                     <div class="portfolio-marquee" id="marquee2">
@@ -1002,18 +1038,23 @@
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Minimalist House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Interior"></div>
+                            <!-- Added 5 new images -->
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Futuristic House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1613977257363-276750382343?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="White Villa"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1613977257363-276750382343?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Poolside House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1628744431533-5568b2f2d558?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Architecture"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1617853757431-13880eda629e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Desert House"></div>
+                            <!-- Original duplicate images -->
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Home Exterior"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Minimalist House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
                             <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Interior"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Home Exterior"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Minimalist House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Interior"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Home Exterior"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Minimalist House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern House"></div>
-                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Interior"></div>
+                            <!-- Added 5 new images (duplicates) -->
+                            <div class="portfolio-item"><img src="httpsall-tasks://images.unsplash.com/photo-1613490493576-7fde63acd811?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Futuristic House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1613977257363-276750382343?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="White Villa"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1613977257363-276750382343?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Poolside House"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1628744431533-5568b2f2d558?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Modern Architecture"></div>
+                            <div class="portfolio-item"><img src="https://images.unsplash.com/photo-1617853757431-13880eda629e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Desert House"></div>
                         </div>
                     </div>
                     <h2 data-splitting>Our Portfolio.</h2>
@@ -1408,6 +1449,7 @@
                 const horizontalSection = document.querySelector('.horizontal-track');
                 const scrollWrapper = document.querySelector('.horizontal-scroll-wrapper');
                 
+                // ADDED: Extra 2000px of scroll for the portfolio animation
                 const horizontalTl = gsap.to(horizontalSection, {
                     x: () => `-${horizontalSection.scrollWidth - scrollWrapper.offsetWidth}px`,
                     ease: "none",
@@ -1416,7 +1458,7 @@
                         start: "top top",
                         pin: true,
                         scrub: 1,
-                        end: () => `+=${horizontalSection.scrollWidth - scrollWrapper.offsetWidth}`,
+                        end: () => `+=${horizontalSection.scrollWidth - scrollWrapper.offsetWidth + 2000}`,
                         invalidateOnRefresh: true
                     }
                 });
@@ -1434,7 +1476,7 @@
                         containerAnimation: horizontalTl,
                         trigger: "#services",
                         start: "left 60%", 
-                        end: "right 70%", 
+                        end: "right 60%", 
                         scrub: true,
                     }
                 });
@@ -1450,53 +1492,73 @@
                         backdropFilter: 'blur(5px)', 
                         ease: 'power1.inOut' 
                     }, "card2_starts")
+                    .to([".services-heading", ".cards-container"], {
+                        opacity: 0,
+                        filter: 'blur(10px)',
+                        ease: 'power1.in'
+                    })
                     .to(".blur-overlay", { 
                         opacity: 0, 
                         backdropFilter: 'blur(0px)', 
-                        ease: 'power1.inOut' 
-                    }, "card3_starts");
+                        ease: 'power1.out' 
+                    }, "<"); 
 
+                // --- PORTFOLIO HEADING ANIMATION (IN) ---
+                gsap.fromTo("#portfolio h2", 
+                    { xPercent: 100, opacity: 0 },
+                    { 
+                        xPercent: -50, // Stays at transform: translate(-50%, -50%)
+                        opacity: 1, 
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            containerAnimation: horizontalTl,
+                            trigger: "#portfolio",
+                            start: "left 80%", 
+                            end: "left 50%", 
+                            scrub: 1,
+                        }
+                    }
+                );
 
-                gsap.to(".services-heading h2", {
-                    opacity: 0,
-                    filter: 'blur(15px)',
-                    ease: 'power1.in',
-                    scrollTrigger: {
-                        containerAnimation: horizontalTl,
-                        trigger: "#services",
-                        start: "left 20%",
-                        end: "left 5%",
-                        scrub: 1,
-                    }
-                });
-                
-                // --- MODIFIED PORTFOLIO ANIMATION ---
-                const portfolioTl = gsap.timeline({
-                    scrollTrigger: {
-                        containerAnimation: horizontalTl,
-                        trigger: "#portfolio",
-                        start: "left 75%",
-                        end: "left center",
-                        scrub: 1,
-                    }
-                });
-                portfolioTl.from("#portfolio h2 .word", { y: 30, opacity: 0, filter: 'blur(8px)', stagger: 0.1 });
-                
+                // --- PORTFOLIO MARQUEE TIMELINE ---
                 const portfolioMarqueeTl = gsap.timeline({
                     scrollTrigger: {
                         containerAnimation: horizontalTl,
                         trigger: "#portfolio",
-                        start: "left center",
-                        end: "right left",
-                        scrub: 1.5,
+                        start: "left 40%", // Start after heading is centered
+                        end: "right 20%", // Use the extra 2000px of scroll
+                        scrub: 1
                     }
                 });
 
-                portfolioMarqueeTl
-                    .from("#marquee1 .portfolio-track", { xPercent: -50 }, 0)
-                    .from("#marquee2 .portfolio-track", { xPercent: 50 }, 0);
+                // 1. Reveal Marquees
+                // This animation will happen over the first 25% of the scroll duration
+                portfolioMarqueeTl.fromTo("#marquee1", 
+                    { opacity: 0, yPercent: -100, xPercent: -50 }, 
+                    { opacity: 1, yPercent: 0, xPercent: 0, ease: 'power2.out' }, 
+                    0
+                );
+                portfolioMarqueeTl.fromTo("#marquee2", 
+                    { opacity: 0, yPercent: 100, xPercent: 50 }, 
+                    { opacity: 1, yPercent: 0, xPercent: 0, ease: 'power2.out' }, 
+                    0
+                );
+                
+                // Add a label to mark the end of the reveal
+                portfolioMarqueeTl.add("revealDone", 0.25); // At 25% of the scrub duration
 
-
+                // 2. Scroll Marquees (Marquee 1 to RIGHT, Marquee 2 to LEFT)
+                // The scroll animations will *start* only after the "revealDone" label
+                portfolioMarqueeTl.fromTo("#marquee1 .portfolio-track", 
+                    { xPercent: -50 }, // Start at -50%
+                    { xPercent: 0, ease: "none" }, // End at 0% (Scrolls RIGHT)
+                    "revealDone" // Start scrolling after reveal
+                );
+                portfolioMarqueeTl.to("#marquee2 .portfolio-track", 
+                    { xPercent: -100, ease: "none" }, // Start at -50% (from CSS), end at -100% (Scrolls LEFT)
+                    "revealDone" // Start scrolling after reveal
+                );
+                
             } else { // --- MOBILE ANIMATIONS ---
                 gsap.utils.toArray('#services h2 .word').forEach(word => {
                     gsap.from(word.parentNode, {
@@ -1524,20 +1586,21 @@
                     }
                 });
                 
-                const mobilePortfolioTl = gsap.timeline({
+                // --- PORTFOLIO HEADING ANIMATION (MOBILE) ---
+                gsap.from("#portfolio h2", {
+                    xPercent: 50, 
+                    opacity: 0,
+                    ease: 'power2.out',
                     scrollTrigger: {
                         trigger: "#portfolio",
-                        start: "top top",
-                        pin: true,
+                        start: "top 70%",
+                        end: "top 40%",
                         scrub: 1,
-                        end: "+=2000"
                     }
                 });
-                mobilePortfolioTl.from("#portfolio h2 .word", { y: 30, opacity: 0, filter: 'blur(8px)', stagger: 0.1 })
-                    .from("#marquee1 .portfolio-track", { xPercent: -50 }, 0.25)
-                    .from("#marquee2 .portfolio-track", { xPercent: 50 }, 0.25);
             }
 
+            // --- PROJECTS SECTION ---
             const projectsTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: "#projects",
@@ -1559,8 +1622,9 @@
                 ease: "none",
             }, 0);
             
+            // --- TESTIMONIALS SECTION ---
             const slides = gsap.utils.toArray(".testimonial-slide");
-            const totalSlides = slides.length / 2;
+            const totalSlides = slides.length / 2; 
 
             gsap.set(".testimonial-slider", { xPercent: 0 });
 
@@ -1574,12 +1638,24 @@
                 }
             });
 
-
+            // --- BLUEPRINT & FOOTER ANIMATIONS ---
             gsap.from(".blueprint-block", {
                 opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power3.out",
                 scrollTrigger: {
                     trigger: "#blueprint",
                     start: "top 70%",
+                }
+            });
+            
+            // --- FOOTER REVEAL ANIMATION ---
+            gsap.from(".footer-wrapper", {
+                yPercent: 100, 
+                duration: 1.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: ".footer-wrapper", 
+                    start: "top 95%", 
+                    toggleActions: "play none none reverse"
                 }
             });
 
@@ -1606,6 +1682,11 @@
         }
 
         window.addEventListener('load', () => {
+            // Duplicate testimonial slides for seamless loop
+            const slider = document.querySelector(".testimonial-slider");
+            const slides = slider.innerHTML;
+            slider.innerHTML += slides;
+
             initThree();
             initAnimations();
             loader.classList.add('hidden');
@@ -1615,4 +1696,6 @@
 </body>
 
 </html>
+
+
 
