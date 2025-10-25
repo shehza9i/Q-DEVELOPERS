@@ -315,13 +315,18 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            gap: 5%;
+            /* ADDED: Position relative to act as container */
+            position: relative;
+            /* Set a height to contain absolute children, 100% might be too much */
+            min-height: 400px; /* Or a height that fits your cards */
         }
 
         .services-heading {
             width: 100%;
             text-align: center;
             flex-shrink: 0;
+            /* ADDED: Position absolute */
+            position: absolute;
         }
 
         .services-heading h2 {
@@ -331,8 +336,11 @@
         .cards-container {
             display: flex;
             gap: 30px;
-            width: 65%;
+            width: 80%; /* MODIFIED: Was 65%, changed to 80% */
             flex-shrink: 0;
+            /* ADDED: Position absolute */
+            position: absolute;
+            justify-content: center; /* Center the cards in the 80% width */
         }
 
         .service-card {
@@ -655,10 +663,62 @@
             max-width: 100%;
             line-height: 1.6;
         }
+        
+        /* ADDED: Custom Cursor for Drag Section */
+        .drag-cursor {
+            position: fixed;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            will-change: transform, opacity;
+        }
+        .drag-cursor-dot {
+            width: 40px;
+            height: 40px;
+            background-color: var(--electric-purple);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .drag-cursor-dot::before { /* The "twisted" dot */
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--cool-white);
+            border-radius: 50%;
+            animation: cursor-orbit 3s linear infinite;
+        }
+        .drag-cursor span {
+            color: var(--cool-white);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        @keyframes cursor-orbit {
+            0% { transform: translate(18px, 0) rotate(0deg) translateX(18px); }
+            100% { transform: translate(18px, 0) rotate(360deg) translateX(18px); }
+        }
 
+        body.drag-cursor-active {
+            cursor: none; /* Hide native cursor */
+        }
+        body.drag-cursor-active .drag-cursor {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        /* END ADDED */
+
+        /* Stacking order */
         .card-1 { z-index: 1; }
-        .card-2 { z-index: 2; }
-        .card-3 { z-index: 3; }
+        .card-2 { z-index: 3; } /* MODIFIED: Card 2 is on top */
+        .card-3 { z-index: 2; } /* MODIFIED: Card 3 is behind 2 */
 
         /* --- Footer --- */
         .footer-wrapper {
@@ -785,7 +845,8 @@
             .footer-cta p { margin: 0 auto 30px; }
             .footer-wrapper, footer { background-color: var(--black-bg); }
             /* --- ADDED: Hide Liquid Ether on Mobile --- */
-             #liquid-ether-projects-bg { display: none; }
+             /* MODIFIED: This is now a class */
+             .liquid-ether-container { display: none; }
              #projects { background-color: var(--cool-white); /* Give it back its bg */ }
         }
 
@@ -843,6 +904,13 @@
     <canvas id="three-canvas"></canvas>
     <div class="blur-overlay"></div>
     <div class="loader">Loading...</div>
+
+    <!-- ADDED: Custom cursor element -->
+    <div class="drag-cursor">
+        <div class="drag-cursor-dot">
+            <span>Drag</span>
+        </div>
+    </div>
 
     <main>
         <section id="hero">
@@ -934,7 +1002,8 @@
         </div>
 
         <section id="projects">
-            <div id="liquid-ether-projects-bg" class="liquid-ether-container"></div>
+            <!-- MODIFIED: Changed ID to class, as it's now conditional -->
+            <div class="liquid-ether-container"></div>
 
             <h2 data-splitting>Signature Projects.</h2>
             <div class="project-item item-1">
@@ -1013,6 +1082,7 @@
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script> <!-- ADDED: Draggable Plugin -->
     <script src="https://unpkg.com/split-type"></script>
     <script type="importmap">
     {
@@ -1036,7 +1106,7 @@
         } from 'ogl';
 
 
-        gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger, Draggable); // MODIFIED: Added Draggable
         const loader = document.querySelector('.loader');
 
         const lenis = new Lenis({ lerp: 0.05, smoothWheel: true });
@@ -1220,15 +1290,52 @@
                 masterTimeline.to(horizontalTrack, { duration: 2.5 }, "services");
 
                 const servicesTl = gsap.timeline();
-                gsap.set('.cards-container', { position: 'absolute', right: '8%', transform: 'translateX(100%)', opacity: 0 });
-                gsap.set('.service-card', { y: 50, opacity: 0 });
-                servicesTl.to(".services-heading", { xPercent: -50, ease: "power2.inOut" })
-                          .fromTo(".cards-container", { xPercent: 100, opacity: 0 }, { xPercent: -50, opacity: 1, ease: "power2.out" })
-                          .add("card2_starts", "-=0.3").add("card3_starts", "-=0.1")
-                          .staggerFromTo(".service-card", 0.8, { y: 50, opacity: 0 }, { y: 0, opacity: 1, ease: 'back.out(1.7)' }, 0.2, "-=0.5");
-                          // REMOVED: .to([".services-heading", ".cards-container"], { opacity: 0, filter: 'blur(10px)', ease: 'power2.inOut' })
+                
+                // --- MODIFIED: New Services Animation ---
+                
+                // 1. Remove old 'set' states
+                // REMOVED: gsap.set('.cards-container', { position: 'absolute', right: '8%', transform: 'translateX(100%)', opacity: 0 });
+                // REMOVED: gsap.set('.service-card', { y: 50, opacity: 0 });
+                
+                // 2. Set new initial positions
+                // Start heading off-center to the right
+                gsap.set(".services-heading", { x: '100vw', opacity: 0 }); 
+                // Start card container *way* off-screen to the right
+                gsap.set(".cards-container", { x: '100vw', opacity: 0 }); 
+
+                // 3. Animate heading from right to center
+                servicesTl.to(".services-heading", { 
+                    x: 0, 
+                    opacity: 1, 
+                    ease: "power2.inOut", 
+                    duration: 1.0 
+                });
+                
+                // 4. ADDED: Add a label for when the heading is centered
+                servicesTl.add("headingCentered");
+
+                // 5. Animate cards in *after* heading is centered
+                servicesTl.to(".cards-container", { 
+                    x: '15vw', // MODIFIED: Settle on the right side
+                    opacity: 1, 
+                    ease: "power2.out", 
+                    duration: 1.0 // 1 second to slide in
+                }, "headingCentered"); // <-- Start at the new label
+
+                // 6. Animate heading to the left *at the same time* as cards appear
+                servicesTl.to(".services-heading", {
+                    x: '-35vw', // MODIFIED: Settle on the left side
+                    // REMOVED: opacity: 0,
+                    // REMOVED: filter: 'blur(5px)', // Remove the outro effect
+                    ease: "power2.inOut", // MODIFIED: Was power2.in
+                    duration: 1.0 // 1 second to move out
+                }, "headingCentered"); // <-- Start at the new label
+
+                // --- End of Modification ---
+                
+                // REMOVED: .to([".services-heading", ".cards-container"], { opacity: 0, filter: 'blur(10px)', ease: 'power2.inOut' })
                           // REMOVED: .to(".blur-overlay", { opacity: 0, backdropFilter: 'blur(0px)', ease: 'power2.inOut' }, "<");
-                masterTimeline.add(servicesTl, "services");
+                masterTimeline.add(servicesTl, "aboutLeave"); // MODIFIED: Was "services". Starts the animation at the same time as the "about" outro.
 
                 // Add label for services outro
                 masterTimeline.add("servicesLeave", ">"); // At the end of servicesTl
@@ -1255,13 +1362,19 @@
                 masterTimeline.to(horizontalTrack, { duration: 3.0 }, "portfolio");
 
                 // ADDED: Animate portfolio heading (no delay)
-                masterTimeline.from("#portfolio .portfolio-heading", {
+                // --- MODIFIED: Changed animation to slide from right ---
+                masterTimeline.fromTo("#portfolio .portfolio-heading", {
                     opacity: 0,
-                    y: 30,
-                    filter: 'blur(5px)',
+                    x: '50vw', // Start from the right
+                    filter: 'blur(5px)'
+                }, {
+                    opacity: 1,
+                    x: 0, // Animate to center
+                    filter: 'blur(0px)',
                     duration: 1.0,
                     ease: 'power2.out'
-                }, "portfolio"); // Starts at the "portfolio" label
+                }, "servicesLeave+=0.5"); // MODIFIED: Was "portfolio". Starts 0.5s into the services outro.
+                // --- END MODIFICATION ---
 
                 // ADDED: Fade out the blur overlay as portfolio section comes in
                 masterTimeline.to(".blur-overlay", { 
@@ -1269,7 +1382,7 @@
                     backdropFilter: 'blur(0px)', 
                     ease: 'power2.out', 
                     duration: 1.0
-                }, "portfolio");
+                }, "servicesLeave+=0.5"); // MODIFIED: Was "portfolio". Matches the heading.
 
                 const portfolioRow1Wrapper = document.getElementById("portfolio-row1-wrapper");
                 const portfolioRow2Wrapper = document.getElementById("portfolio-row2-wrapper");
@@ -1336,21 +1449,136 @@
 
 
             // --- STACKED CARDS SECTION ---
-            const stackedCardsTl = gsap.timeline({ scrollTrigger: { trigger: "#stacked-cards", start: "top top", end: "+=3500", pin: true, scrub: 2.5 }});
-            stackedCardsTl.from("#stacked-cards h2 .word", { y: 30, opacity: 0, filter: 'blur(8px)', stagger: 0.08, ease: 'power3.out' });
-            const cardInEase = 'back.out(1.4)', cardInTime = 1.3, cardInStagger = 0.3;
-            gsap.set(".card-1", { yPercent: 120, xPercent: -10, opacity: 0, rotate: -8, scale: 0.8, filter: 'blur(5px)' });
-            gsap.set(".card-2", { yPercent: 120, xPercent: 0, opacity: 0, rotate: 0, scale: 0.8, filter: 'blur(5px)' });
-            gsap.set(".card-3", { yPercent: 120, xPercent: 10, opacity: 0, rotate: 8, scale: 0.8, filter: 'blur(5px)' });
-            stackedCardsTl.to(".card-1", { yPercent: 0, xPercent: 0, opacity: 1, rotate: 0, scale: 0.9, filter: 'blur(0px)', ease: cardInEase, duration: cardInTime }, "-=0.8");
-            stackedCardsTl.to(".card-2", { yPercent: 0, xPercent: 0, opacity: 1, rotate: 0, scale: 0.95, filter: 'blur(0px)', ease: cardInEase, duration: cardInTime }, `-=${cardInTime - cardInStagger}`);
-            stackedCardsTl.to(".card-3", { yPercent: 0, xPercent: 0, opacity: 1, rotate: 0, scale: 1, filter: 'blur(0px)', ease: cardInEase, duration: cardInTime }, `-=${cardInTime - cardInStagger}`);
-            stackedCardsTl.add("pause", "+=1.5");
-            stackedCardsTl.to("#stacked-cards h2", { opacity: 0, y: -30, filter: 'blur(8px)', ease: 'power2.inOut' }, "pause");
-            const cardOutEase = 'power2.inOut', cardOutStagger = 0.3;
-            stackedCardsTl.to(".card-3", { xPercent: 150, yPercent: -50, rotate: 25, opacity: 0, filter: 'blur(10px)', ease: cardOutEase }, "pause");
-            stackedCardsTl.to(".card-2", { xPercent: -150, yPercent: -20, rotate: -25, opacity: 0, filter: 'blur(10px)', ease: cardOutEase }, `pause+=${cardOutStagger}`);
-            stackedCardsTl.to(".card-1", { xPercent: 120, yPercent: 30, rotate: 15, opacity: 0, filter: 'blur(10px)', ease: cardOutEase }, `pause+=${cardOutStagger * 2}`);
+            // --- MODIFIED: Split logic for Desktop (interactive) and Mobile (simple) ---
+
+            if (window.innerWidth > 900) {
+                // --- DESKTOP: Pin, scrub one-by-one, then make draggable ---
+
+                const stackedCardsTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#stacked-cards",
+                        start: "top top",
+                        end: "+=4000", // Increased duration for one-by-one scroll
+                        pin: true,
+                        scrub: 1.5, // Slower scrub
+                        onComplete: initDraggableCards // Initialize Draggable when animation finishes
+                    }
+                });
+
+                // 1. Animate Heading In
+                stackedCardsTl.from("#stacked-cards h2 .word", {
+                    y: 30, opacity: 0, filter: 'blur(8px)', stagger: 0.08,
+                    ease: 'power3.out',
+                    duration: 1
+                });
+                
+                // Set initial positions
+                gsap.set(".card-1", { yPercent: 120, xPercent: 0, opacity: 0, rotate: 0, scale: 0.8, filter: 'blur(5px)' });
+                gsap.set(".card-2", { yPercent: 120, xPercent: 0, opacity: 0, rotate: 0, scale: 0.8, filter: 'blur(5px)' });
+                gsap.set(".card-3", { yPercent: 120, xPercent: 0, opacity: 0, rotate: 0, scale: 0.8, filter: 'blur(5px)' });
+
+                // 2. Animate cards in one-by-one
+                stackedCardsTl.to(".card-1", {
+                    yPercent: 0, xPercent: -5, opacity: 1, rotate: -8, scale: 0.9,
+                    filter: 'blur(0px)', ease: 'back.out(1.4)', duration: 1
+                }, "+=0.5"); // Pause after heading
+
+                stackedCardsTl.to(".card-2", {
+                    yPercent: -5, xPercent: 0, opacity: 1, rotate: 0, scale: 1,
+                    filter: 'blur(0px)', ease: 'back.out(1.4)', duration: 1
+                }, "+=0.5"); // Pause after card 1
+
+                stackedCardsTl.to(".card-3", {
+                    yPercent: 0, xPercent: 5, opacity: 1, rotate: 8, scale: 0.9,
+                    filter: 'blur(0px)', ease: 'back.out(1.4)', duration: 1
+                }, "+=0.5"); // Pause after card 2
+
+                // 3. Custom Cursor Logic
+                const cursor = document.querySelector(".drag-cursor");
+                const cardsSection = document.querySelector("#stacked-cards");
+
+                cardsSection.addEventListener("mouseenter", () => document.body.classList.add("drag-cursor-active"));
+                cardsSection.addEventListener("mouseleave", () => document.body.classList.remove("drag-cursor-active"));
+                window.addEventListener("mousemove", (e) => {
+                    gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.2, ease: "power2.out" });
+                });
+
+                // 4. Draggable Function
+                function initDraggableCards() {
+                    gsap.utils.toArray(".stacked-card").forEach(card => {
+                        Draggable.create(card, {
+                            type: "x,y",
+                            bounds: cardsSection,
+                            inertia: true,
+                            onDragStart: function() {
+                                gsap.to(this.target, { scale: this.target.classList.contains('card-2') ? 1.05 : 0.95, duration: 0.3, ease: 'power2.out' });
+                                this.target.style.cursor = 'grabbing';
+                            },
+                            onDragEnd: function() {
+                                gsap.to(this.target, { scale: this.target.classList.contains('card-2') ? 1 : 0.9, duration: 0.3, ease: 'power2.out' });
+                                this.target.style.cursor = 'grab';
+                            }
+                        });
+                        card.style.cursor = 'grab'; // Add grab cursor
+                    });
+                }
+
+            } else {
+                // --- MOBILE: Simple, non-pinned, staggered fan-in animation ---
+                
+                // 1. Animate Heading In
+                gsap.from("#stacked-cards h2 .word", {
+                    y: 30, opacity: 0, filter: 'blur(8px)', stagger: 0.08,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: "#stacked-cards",
+                        start: "top 80%",
+                    }
+                });
+
+                const stackedCardsTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: ".cards-stack-wrapper",
+                        start: "top 85%", // Start when wrapper is 85% from top
+                    }
+                });
+
+                const cardInEase = 'back.out(1.7)';
+                const cardInTime = 1.2;
+                const cardInStagger = 0.25;
+
+                // Set initial "from" positions (all from center bottom)
+                gsap.set(".stacked-card", { yPercent: 100, xPercent: 0, opacity: 0, rotate: 0, scale: 0.8, filter: 'blur(5px)' });
+
+                // Card 1 (Left)
+                stackedCardsTl.to(".card-1", {
+                    yPercent: 0, xPercent: -5, opacity: 1, rotate: -8,
+                    scale: 0.9, // Slightly smaller
+                    filter: 'blur(0px)',
+                    ease: cardInEase,
+                    duration: cardInTime
+                }, 0); // Start first
+
+                // Card 2 (Middle, Front)
+                stackedCardsTl.to(".card-2", {
+                    yPercent: -5, xPercent: 0, opacity: 1, rotate: 0, // yPercent -5 to be slightly higher
+                    scale: 1, // Full size, in front
+                    filter: 'blur(0px)',
+                    ease: cardInEase,
+                    duration: cardInTime
+                }, cardInStagger); // Stagger
+
+                // Card 3 (Right)
+                stackedCardsTl.to(".card-3", {
+                    yPercent: 0, xPercent: 5, opacity: 1, rotate: 8,
+                    scale: 0.9, // Slightly smaller
+                    filter: 'blur(0px)',
+                    ease: cardInEase,
+                    duration: cardInTime
+                }, cardInStagger * 2); // Stagger last
+            }
+            // --- END MODIFICATION ---
+
 
             // --- FOOTER ANIMATIONS ---
             gsap.to(".background-controller", { opacity: 0, ease: "power1.inOut", scrollTrigger: { trigger: ".footer-wrapper", start: "top 80%", end: "top 50%", scrub: 2 }});
@@ -1370,15 +1598,15 @@
         }
 
         // --- START OF LIQUID ETHER JS ---
-        // Run the script after the DOM is loaded
-        window.addEventListener('DOMContentLoaded', () => { // Keep this wrapper
+        // MODIFIED: Wrapped entire liquid ether script in a check for desktop
+        if (window.innerWidth > 900) {
+            window.addEventListener('DOMContentLoaded', () => { // Keep this wrapper
 
-            // --- Configuration ---
-            const liquidEtherConfig = {
-                colors: ['#ffff', '#ffff', '#00ffff'], // Adjusted colors to match theme
-                mouseForce: 25, // Slightly increased force
-                cursorSize: 120, // Slightly larger cursor
-                isViscous: false,
+                // --- Configuration ---
+                const liquidEtherConfig = {
+                    colors: ['#5E239D', '#8A4BCE', '#7f5af0'], // MODIFIED: Purple theme colors
+                    mouseForce: 25, // Slightly increased force
+                    cursorSize: 120, // Slightly larger cursor
                 viscous: 30,
                 iterationsViscous: 32,
                 iterationsPoisson: 32,
@@ -1515,30 +1743,30 @@
                  if (webglRef.current.autoDriver) {
                      const driver = webglRef.current.autoDriver;
                      driver.enabled = autoDemo; driver.speed = autoSpeed; driver.resumeDelay = autoResumeDelay; driver.rampDurationMs = autoRampDuration * 1000;
-                     if (driver.mouse) { driver.mouse.autoIntensity = autoIntensity; driver.mouse.takeoverDuration = takeoverDuration; }
+                     }
+                     if (resolution !== prevRes) { sim.resize(); }
                  }
-                 if (resolution !== prevRes) { sim.resize(); }
-             }
-             applyOptionsFromProps();
+                 applyOptionsFromProps();
 
-             // Only start if the section is initially visible (or always start if IntersectionObserver handles it)
-             // webgl.start(); // Start is handled by IntersectionObserver
+                 // Only start if the section is initially visible (or always start if IntersectionObserver handles it)
+                 // webgl.start(); // Start is handled by IntersectionObserver
 
-             // IntersectionObserver (Copied Verbatim, targets the #liquid-ether-projects-bg container)
-             const io = new IntersectionObserver( entries => { const entry = entries[0]; const isVisible = entry.isIntersecting && entry.intersectionRatio > 0; isVisibleRef.current = isVisible; if (!webglRef.current) return; if (isVisible && !document.hidden) { webglRef.current.start(); } else { webglRef.current.pause(); } }, { threshold: [0, 0.01, 0.1] });
-             io.observe(container);
-             intersectionObserverRef.current = io;
+                 // IntersectionObserver (Copied Verbatim, targets the .liquid-ether-container container)
+                 const io = new IntersectionObserver( entries => { const entry = entries[0]; const isVisible = entry.isIntersecting && entry.intersectionRatio > 0; isVisibleRef.current = isVisible; if (!webglRef.current) return; if (isVisible && !document.hidden) { webglRef.current.start(); } else { webglRef.current.pause(); } }, { threshold: [0, 0.01, 0.1] });
+                 io.observe(container);
+                 intersectionObserverRef.current = io;
 
-             // ResizeObserver (Copied Verbatim, targets the #liquid-ether-projects-bg container)
-             const ro = new ResizeObserver(() => { if (!webglRef.current) return; if (resizeRafRef.current) cancelAnimationFrame(resizeRafRef.current); resizeRafRef.current = requestAnimationFrame(() => { if (!webglRef.current) return; webglRef.current.resize(); }); });
-             ro.observe(container);
-             resizeObserverRef.current = ro;
+                 // ResizeObserver (Copied Verbatim, targets the .liquid-ether-container container)
+                 const ro = new ResizeObserver(() => { if (!webglRef.current) return; if (resizeRafRef.current) cancelAnimationFrame(resizeRafRef.current); resizeRafRef.current = requestAnimationFrame(() => { if (!webglRef.current) return; webglRef.current.resize(); }); });
+                 ro.observe(container);
+                 resizeObserverRef.current = ro;
 
-             // Cleanup Logic (Copied Verbatim)
-             const cleanup = () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); if (resizeObserverRef.current) { try { resizeObserverRef.current.disconnect(); } catch (e) { void 0; } } if (intersectionObserverRef.current) { try { intersectionObserverRef.current.disconnect(); } catch (e) { void 0; } } if (webglRef.current) { webglRef.current.dispose(); } webglRef.current = null; };
-             window.addEventListener('beforeunload', cleanup);
+                 // Cleanup Logic (Copied Verbatim)
+                 const cleanup = () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); if (resizeObserverRef.current) { try { resizeObserverRef.current.disconnect(); } catch (e) { void 0; } } if (intersectionObserverRef.current) { try { intersectionObserverRef.current.disconnect(); } catch (e) { void 0; } } if (webglRef.current) { webglRef.current.dispose(); } webglRef.current = null; };
+                 window.addEventListener('beforeunload', cleanup);
 
-        }); // End of Liquid Ether DOMContentLoaded
+            }); // End of Liquid Ether DOMContentLoaded
+        } // --- END OF LIQUID ETHER JS WRAPPER ---
         // --- END OF LIQUID ETHER JS ---
 
 
@@ -1550,9 +1778,13 @@
 
             loader.classList.add('hidden');
             ScrollTrigger.refresh();
-            joypixels.run();
+            // MODIFIED: Added check for joypixels
+            if (typeof joypixels !== 'undefined') {
+                joypixels.run();
+            }
         });
     </script>
 </body>
 </html>
+
 
