@@ -1225,14 +1225,51 @@
                 servicesTl.to(".services-heading", { xPercent: -50, ease: "power2.inOut" })
                           .fromTo(".cards-container", { xPercent: 100, opacity: 0 }, { xPercent: -50, opacity: 1, ease: "power2.out" })
                           .add("card2_starts", "-=0.3").add("card3_starts", "-=0.1")
-                          .staggerFromTo(".service-card", 0.8, { y: 50, opacity: 0 }, { y: 0, opacity: 1, ease: 'back.out(1.7)' }, 0.2, "-=0.5")
-                          // .to(".blur-overlay", { opacity: 1, backdropFilter: 'blur(5px)', ease: 'power2.inOut' }, "card2_starts") // REMOVED: This is now handled by the masterTimeline
-                          .to([".services-heading", ".cards-container"], { opacity: 0, filter: 'blur(10px)', ease: 'power2.inOut' })
-                          .to(".blur-overlay", { opacity: 0, backdropFilter: 'blur(0px)', ease: 'power2.inOut' }, "<");
+                          .staggerFromTo(".service-card", 0.8, { y: 50, opacity: 0 }, { y: 0, opacity: 1, ease: 'back.out(1.7)' }, 0.2, "-=0.5");
+                          // REMOVED: .to([".services-heading", ".cards-container"], { opacity: 0, filter: 'blur(10px)', ease: 'power2.inOut' })
+                          // REMOVED: .to(".blur-overlay", { opacity: 0, backdropFilter: 'blur(0px)', ease: 'power2.inOut' }, "<");
                 masterTimeline.add(servicesTl, "services");
 
-                masterTimeline.to(horizontalTrack, { x: () => -panels[0].offsetWidth * 2, ease: "none", duration: 1 });
+                // Add label for services outro
+                masterTimeline.add("servicesLeave", ">"); // At the end of servicesTl
+
+                masterTimeline.to(horizontalTrack, { x: () => -panels[0].offsetWidth * 2, ease: "none", duration: 1 }, "servicesLeave");
+                
+                // ADDED: Services section outro animation
+                masterTimeline.to("#services .services-content-wrapper", { // Target the main wrapper
+                    scale: 0.85, 
+                    opacity: 0, 
+                    filter: 'blur(8px)', // Blur the content
+                    ease: 'power2.in', 
+                    duration: 0.8
+                }, "servicesLeave");
+    
+                // ADDED: Fade in the glass morphism blur overlay
+                masterTimeline.to(".blur-overlay", { 
+                    opacity: 1, 
+                    backdropFilter: 'blur(5px)', 
+                    ease: 'power2.in', 
+                    duration: 0.8 
+                }, "servicesLeave");
+
                 masterTimeline.to(horizontalTrack, { duration: 3.0 }, "portfolio");
+
+                // ADDED: Animate portfolio heading (no delay)
+                masterTimeline.from("#portfolio .portfolio-heading", {
+                    opacity: 0,
+                    y: 30,
+                    filter: 'blur(5px)',
+                    duration: 1.0,
+                    ease: 'power2.out'
+                }, "portfolio"); // Starts at the "portfolio" label
+
+                // ADDED: Fade out the blur overlay as portfolio section comes in
+                masterTimeline.to(".blur-overlay", { 
+                    opacity: 0, 
+                    backdropFilter: 'blur(0px)', 
+                    ease: 'power2.out', 
+                    duration: 1.0
+                }, "portfolio");
 
                 const portfolioRow1Wrapper = document.getElementById("portfolio-row1-wrapper");
                 const portfolioRow2Wrapper = document.getElementById("portfolio-row2-wrapper");
@@ -1518,3 +1555,4 @@
     </script>
 </body>
 </html>
+
